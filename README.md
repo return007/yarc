@@ -36,3 +36,6 @@ the remote should automatically switch to movie mode.
    window / switch windows via mobile touch actions (like mobile's default
    way to show running apps)
 
+ - Customize theme of the remotes. Plug and play themes from website.
+ 
+ - Allow user's to create their own themes and use it.
