@@ -39,3 +39,5 @@ the remote should automatically switch to movie mode.
  - Customize theme of the remotes. Plug and play themes from website.
  
  - Allow user's to create their own themes and use it.
+
+ - Netflix / Prime customization - example: skip intro, etc.
