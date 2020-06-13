@@ -41,3 +41,7 @@ the remote should automatically switch to movie mode.
  - Allow user's to create their own themes and use it.
 
  - Netflix / Prime customization - example: skip intro, etc.
+
+ - The remote should work even when the devices are not in same network.
+   For that, we need the yarc server to generate a QR code and the client
+   app should connect to the device over the internet.
