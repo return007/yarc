@@ -168,7 +168,7 @@ main .keyboard {
     text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
 }
 .right-remote {
     cursor: pointer;
@@ -181,7 +181,7 @@ main .keyboard {
     text-align: center;
     display: flex;
     justify-content: center;
-    align-items: center;    
+    align-items: center;
 }
 .left-remote:active {
     color: cyan;
