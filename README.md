@@ -45,3 +45,6 @@ the remote should automatically switch to movie mode.
  - The remote should work even when the devices are not in same network.
    For that, we need the yarc server to generate a QR code and the client
    app should connect to the device over the internet.
+
+ - Listen to the audio from phone itself (Use-case: wired earphones can be
+   plugged in to mobile but the video would continue to play on the screen)
