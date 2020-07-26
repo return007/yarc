@@ -210,7 +210,6 @@ main .keyboard {
     }
 }
 
-
 .left-remote {
     cursor: pointer;
     -webkit-transition: all 0.2s ease;
@@ -248,22 +247,48 @@ main .keyboard {
     text-shadow: 0 0 4px cyan;
 }
 #brightness-low {
-    mask: url("../resources/sun.svg");
-    -webkit-mask: url("../resources/sun.svg");
+    mask: url("../resources/brightness.svg");
+    -webkit-mask: url("../resources/brightness.svg");
     background-color: white;
     width: 20px;
     height: 20px;
     display: inline-block;
-    float: left;
+    left: 20px;
+    position: absolute;
+    cursor: pointer;
 }
 #brightness-high {
-    mask: url("../resources/sun.svg");
-    -webkit-mask: url("../resources/sun.svg");
+    mask: url("../resources/brightness.svg");
+    -webkit-mask: url("../resources/brightness.svg");
     background-color: white;
     width: 30px;
     height: 30px;
     display: inline-block;
-    float: right;
+    right: 20px;
+    position: absolute;
+    cursor: pointer;
+}
+#mute {
+    mask: url("../resources/mute.svg");
+    -webkit-mask: url("../resources/mute.svg");
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    left: 20px;
+    position: absolute;
+    cursor: pointer;
+}
+#fullscreen {
+    mask: url("../resources/fullscreen.svg");
+    -webkit-mask: url("../resources/fullscreen.svg");
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    right: 20px;
+    position: absolute;
+    cursor: pointer;
 }
 
 
