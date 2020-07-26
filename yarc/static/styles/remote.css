@@ -11,6 +11,7 @@ body {
     transform: translate(-50%, -50%);
     z-index: 1;
     width: 100%;
+    max-width: 970px;
 }
 header {
     width: 100%;
@@ -108,6 +109,10 @@ main .keyboard {
     border-radius: 5px;
 }
 
+.settings-bar {
+    display: none;
+}
+
 .keyboard-row {
     text-align: center;
     display: flex;
@@ -195,6 +200,14 @@ main .keyboard {
     .key#tab, .key#caps, .key#shift, .key#toggle {
         font-size: 12px;
     }
+    .settings-bar {
+        display: block;
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        font-size: 30px;
+        color: white;
+    }
 }
 
 
@@ -234,6 +247,26 @@ main .keyboard {
     color: cyan;
     text-shadow: 0 0 4px cyan;
 }
+#brightness-low {
+    mask: url("../resources/sun.svg");
+    -webkit-mask: url("../resources/sun.svg");
+    background-color: white;
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    float: left;
+}
+#brightness-high {
+    mask: url("../resources/sun.svg");
+    -webkit-mask: url("../resources/sun.svg");
+    background-color: white;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    float: right;
+}
+
+
 * {
     -webkit-tap-highlight-color:  rgba(255, 255, 255, 0);
     font-family: 'Roboto', sans-serif;

@@ -3,10 +3,12 @@ Defines Flask app.
 """
 
 import argparse
+import json
 import os
 import logging
+import pyautogui
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 from util import log
 
@@ -23,6 +25,18 @@ def disable_logging():
 @app.route("/")
 def serve_html():
     return render_template("remote.html")
+
+
+@app.route("/keypress", methods=['POST'])
+def keypress_callback():
+    """
+    Called from UI when a key press event occurs
+    """
+    data = request.get_json()
+    buttonid = data['buttonid']
+    assert buttonid in pyautogui.KEYBOARD_KEYS, "Unknown buttonid received"
+    pyautogui.press(buttonid)
+    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 
 @app.after_request

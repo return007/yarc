@@ -8,7 +8,8 @@ import subprocess
 import os
 import time
 
-from util import get_my_local_addr, log, render_qrcode, get_free_port, UXException
+from util import (get_my_local_addr, log, render_qrcode, get_free_port,
+                  UXException)
 
 
 def handle_same_network(my_local_addr=None):
@@ -54,6 +55,9 @@ def handle_same_network(my_local_addr=None):
     log(f"\t\t{addr}\n", color="blue", bold=True)
 
     try:
+        # TODO: Right now, this is based on user's feedback.
+        #       Ideally, this should be figured out by ourself, based on the
+        #       fact whether the user hit the service or not.
         log("Are you able to connect to it ? [Y/n]")
         response = input()
         if response.lower() == "n" or response.lower() == "no":
@@ -66,7 +70,9 @@ def handle_same_network(my_local_addr=None):
     except Exception as e:
         # Some eror occurred in the remote server process
         if isinstance(e, UXException):
+            # Kill the server process
             # If the exception is raised by the user, then reraise it
+            proc.kill()
             raise
         else:
             # Simply pass, and then gracefully exit
@@ -82,7 +88,12 @@ def handle_same_network(my_local_addr=None):
 
 
 def handle_internet():
-    pass
+    log("Establishing a secure connection with the server...", bold=True,
+        color="cyan")
+
+    # TODO: Write stuff here
+
+    log("Exiting...", color="cyan")
 
 
 def main():
