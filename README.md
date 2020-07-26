@@ -30,6 +30,17 @@ the remote should automatically switch to movie mode.
 
  - Screencast from mobile to laptop, so that one can enjoy in a bigger screen
 
+ - Allow adding shortcuts, for example, "Open Netflix" can be a shortcut, to
+   open Netflix on a single tap. Now, the way people open netflix is different.
+   Some may have a Netflix app installed on their device, while others may use
+   browser. Thus, user should be able to create with predefined event blocks, like:
+   
+   `press(winleft) -> type("Netflix") -> press(enter)`
+   
+   OR 
+   
+   `press(winleft) -> type("Chrome") -> type("Netflix") -> press(enter)`
+
  - Gaming mode
 
  - Information about all opened windows and ability to jump to a specific
