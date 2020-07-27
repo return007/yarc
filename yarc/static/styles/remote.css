@@ -109,6 +109,52 @@ main .keyboard {
     border-radius: 5px;
 }
 
+.mouse .touchpad {
+    background: -webkit-gradient(linear, left bottom, left top, from(#ddd), to(#eee));
+    background: linear-gradient(0deg, #ddd, #eee);
+    width: 300px;
+    min-width: 300px;
+    margin: auto;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    height: 200px;
+    position: relative;
+}
+.mouse .mouse-btn {
+    display: inline-block;
+    padding: 5px;
+    margin-bottom: 5px;
+    background: #eee;
+    cursor: pointer;
+    height: 20px;
+    width: 140px;
+    transition: border-bottom 0.5s linear;
+    box-shadow: 0px 2px 0px 1px #AAA;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    flex: auto;
+    background: linear-gradient(0deg, #ddd, #eee);
+    position: absolute;
+    bottom: 0;
+}
+.mouse-btn:active {
+    box-shadow: 0px 0px 1px 0px rgb(138, 138, 138);
+    transform: translateY(2px);
+}
+.mouse-btn.left-mouse-btn {
+    left: 5px;
+    border-bottom-left-radius: 15px;
+}
+.mouse-btn.right-mouse-btn {
+    right: 5px;
+    border-bottom-right-radius: 15px;
+}
+
 .settings-bar {
     display: none;
 }
