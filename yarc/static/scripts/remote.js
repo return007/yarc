@@ -18,6 +18,8 @@ function showRemote(n) {
 function init() {
     // Do all the intialization here
     remoteIdx = 1;
+    X = null;
+    Y = null;
     showRemote(remoteIdx);
 
     // Play sound on key press of keyboard
@@ -35,6 +37,31 @@ function init() {
             data: JSON.stringify({buttonid: buttonid}),
             contentType: "application/json; charset=utf-8"
         });
+    });
+    $('.touchpad').on('touchstart', function(event) {
+        X = event.touches[0].clientX;
+        Y = event.touches[0].clientY;
+    });
+    $(".touchpad").on('touchmove', function(event) {
+        var x = event.touches[0].clientX;
+        var y = event.touches[0].clientY;
+        if(X == null && Y == null) {
+            // No previous touch happened.
+            X = x;
+            Y = y;
+        }
+        if(!(X == x && Y == y)) {
+            $.ajax({
+                type: 'post',
+                url: '/mousemove',
+                data: JSON.stringify({delta_x: x-X, delta_y: y-Y}),
+                contentType: "application/json; charset=utf-8"
+            });
+        }
+    });
+    $('.touchpad').on('touchend', function(event) {
+        X = null;
+        Y = null;
     });
 }
 
