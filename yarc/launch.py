@@ -5,10 +5,11 @@ Launcher script to start the remote control server.
 """
 
 import argparse
-import subprocess
 import os
+import threading
 import time
 
+from app import run as app_run
 from util import get_free_port, get_my_local_addr, log, render_qrcode
 
 
@@ -43,19 +44,17 @@ def handle_connection(my_local_addr=None):
       Local IPv4 address of the machine running this code/server. In case it is
       ``None``, then it is determined during runtime.
     """
+    log("\nStarting control server...\n", color="cyan")
     if not my_local_addr:
         my_local_addr = get_my_local_addr()
 
-    log("\nStarting control server...\n", color="cyan")
     port = get_free_port()
     addr = f"http://{my_local_addr}:{port}"
 
-    process_command = f"/usr/bin/env python3 app.py --port {port}"
     try:
-        proc = subprocess.Popen(
-            process_command.split(),
-            cwd=os.path.dirname(os.path.realpath(__file__))
-        )
+        app_thread = threading.Thread(target=app_run, args=(port,),
+                                      daemon=True)
+        app_thread.start()
     except:
         log("Stopping control server...", color="red")
         raise
@@ -69,20 +68,16 @@ def handle_connection(my_local_addr=None):
     log(f"\t\t{addr}\n", color="blue", bold=True)
 
     try:
-        while proc.poll() is None:
-            # As long as the control server is up
+        while app_thread.is_alive():
             time.sleep(1)
     except Exception as e:
         # Simply pass, and then gracefully exit
         # Don't forget to print what happened
         log(f"Unexpected failure at control server process\n"
-            f"Control server process exited with code: {proc.poll()}",
-            color="red")
+            f"  {str(e)}", color="red")
         log("Exiting...", color="cyan")
     except BaseException:
-        # In case of some interupt from the user, gracefully kill the control
-        # process and then exit
-        proc.kill()
+        # Simply pass and exit
         log("Exiting...", color="cyan")
 
 

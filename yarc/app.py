@@ -16,7 +16,7 @@ from util import log
 app = Flask(__name__)
 
 
-def disable_logging():
+def disable_flask_logging():
     os.environ['WERKZEUG_RUN_MAIN'] = 'true'
     log = logging.getLogger('werkzeug')
     log.setLevel(logging.ERROR)
@@ -61,17 +61,18 @@ def add_header(r):
     return r
 
 
-def main():
-    disable_logging()
+def run(port):
+    disable_flask_logging()
+    log("Remote server running...", color="cyan")
+    app.run(host='0.0.0.0', port=port)
+
+
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
         '--port', default='5050',
         help='Specify port no. to which the Flask app will bind to.'
     )
     args = parser.parse_args()
-    log("Remote server running...", color="cyan")
-    app.run(host='0.0.0.0', port=args.port)
 
-
-if __name__ == '__main__':
-    main()
+    run(port=args.port)
