@@ -5,8 +5,28 @@ Helper utlities used by yarc server
 import socket
 import sys
 
-
 from qrcode import QRCode
+
+
+COLOR_MAP = {
+    'black'    : '\033[90m',
+    'red'      : '\033[91m',
+    'green'    : '\033[92m',
+    'yello'    : '\033[93m',
+    'blue'     : '\033[94m',
+    'magenta'  : '\033[95m',
+    'cyan'     : '\033[96m',
+    'white'    : '\033[97m',
+}
+
+
+FORMAT_MAP = {
+    'bold'     : '\033[1m',
+    'dim'      : '\033[2m',
+    'italic'   : '\033[3m',
+    'underline': '\033[4m',
+    'blink'    : '\033[5m',
+}
 
 
 def render_qrcode(text):
@@ -43,27 +63,6 @@ def get_my_local_addr():
         sock.close()
 
     return ip_addr
-
-
-COLOR_MAP = {
-    'black'    : '\033[90m',
-    'red'      : '\033[91m',
-    'green'    : '\033[92m',
-    'yello'    : '\033[93m',
-    'blue'     : '\033[94m',
-    'magenta'  : '\033[95m',
-    'cyan'     : '\033[96m',
-    'white'    : '\033[97m',
-}
-
-
-FORMAT_MAP = {
-    'bold'     : '\033[1m',
-    'dim'      : '\033[2m',
-    'italic'   : '\033[3m',
-    'underline': '\033[4m',
-    'blink'    : '\033[5m',
-}
 
 
 def log(text, where='stdout', color=None, **fmt_options):
@@ -119,10 +118,16 @@ def log(text, where='stdout', color=None, **fmt_options):
 
 def get_free_port():
     """
-    TODO: Write actual implementation; right now, it returns a hardcoded port.
+    Get a free open port on the machine. This is not a very optimal solution,
+    but just works!
     """
-    return 5050
+    try:
+        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        sock.connect(('', 80))
+    except:
+        raise
+    else:
+        port = sock.getsockname()[1]
+        sock.close()
 
-
-class UXException(Exception):
-    pass
+    return port
