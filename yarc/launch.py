@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Launcher script to start the remote control server.
 
@@ -8,22 +9,35 @@ import subprocess
 import os
 import time
 
-from util import (get_my_local_addr, log, render_qrcode, get_free_port,
-                  UXException)
+from util import get_free_port, get_my_local_addr, log, render_qrcode
 
 
-def handle_same_network(my_local_addr=None):
+def handle_connection(my_local_addr=None):
     """
-    In this case, we assume that the devices (the machine running this piece
-    of code and the mobile device a.k.a. the remote) are on same network.
+    Handle connection setup between client and server. There are two possible
+    flows:
 
-    This is possible when both the devices share same LAN. This usually boils
+      1. When devices are in the same local network
+      2. When devices are not in the same local network but are reachable
+         (indirectly) via public internet.
+
+    Case#1 is easy to handle. The server will run on the PC which needs to be
+    controlled while the mobile (aka. controller/client) will connect to server
+    and communicate.
+
+    Case#2 is little hard to handle. It relies on a public echo server to
+    establish communication between client and server.
+
+    Case#1 possible when both the devices share same LAN. This usually boils
     down to the following possible aspects:
 
      - Both PC and mobile on same Wi-Fi (probably a home router, etc.)
      - PC is connected to internet via Ethernet and has an active hotspot &
        mobile is connected to that hotspot.
      - PC is connected on mobile's hotspot.
+
+    For simplicity and quicker TAT, I am only working on Case#1. Case#2 will
+    need little extra engineering.
 
     :param my_local_addr:
       Local IPv4 address of the machine running this code/server. In case it is
@@ -32,22 +46,22 @@ def handle_same_network(my_local_addr=None):
     if not my_local_addr:
         my_local_addr = get_my_local_addr()
 
-    log("\nStarting remote server...\n", color="cyan")
+    log("\nStarting control server...\n", color="cyan")
     port = get_free_port()
     addr = f"http://{my_local_addr}:{port}"
 
     process_command = f"/usr/bin/env python3 app.py --port {port}"
-
     try:
         proc = subprocess.Popen(
             process_command.split(),
             cwd=os.path.dirname(os.path.realpath(__file__))
         )
     except:
-        log("Stopping remote server...", color="red")
+        log("Stopping control server...", color="red")
         raise
 
-    log("Scan the below code to start using remote.", color="cyan", bold=True)
+    log("Scan the below code to start using remote control.", color="cyan",
+        bold=True)
     render_qrcode(addr)
     log("\n\n")
     log("Or alternatively, write the following URL on your mobile browser:",
@@ -55,67 +69,31 @@ def handle_same_network(my_local_addr=None):
     log(f"\t\t{addr}\n", color="blue", bold=True)
 
     try:
-        # TODO: Right now, this is based on user's feedback.
-        #       Ideally, this should be figured out by ourself, based on the
-        #       fact whether the user hit the service or not.
-        log("Are you able to connect to it ? [Y/n]")
-        response = input()
-        if response.lower() == "n" or response.lower() == "no":
-            # User cannot connect via local flow
-            # Start "via internet" flow
-            raise UXException()
         while proc.poll() is None:
-            # As long as the remote server is up
+            # As long as the control server is up
             time.sleep(1)
     except Exception as e:
-        # Some eror occurred in the remote server process
-        if isinstance(e, UXException):
-            # Kill the server process
-            # If the exception is raised by the user, then reraise it
-            proc.kill()
-            raise
-        else:
-            # Simply pass, and then gracefully exit
-            # Don't forget to print what happened
-            log(f"Unexpected failure at remote server process\n"
-                f"Remote server process exited with code: {proc.poll()}",
-                color="red")
+        # Simply pass, and then gracefully exit
+        # Don't forget to print what happened
+        log(f"Unexpected failure at control server process\n"
+            f"Control server process exited with code: {proc.poll()}",
+            color="red")
+        log("Exiting...", color="cyan")
     except BaseException:
-        # In case of some interupt from the user, gracefully kill the remote
+        # In case of some interupt from the user, gracefully kill the control
         # process and then exit
         proc.kill()
         log("Exiting...", color="cyan")
 
 
-def handle_internet():
-    log("Establishing a secure connection with the server...", bold=True,
-        color="cyan")
-
-    # TODO: Write stuff here
-
-    log("Exiting...", color="cyan")
-
-
 def main():
     """
     Entry point (as usual)
-
-    As of now, we do the following:
-
-     - Disable logging from Flask
-     - Start Flask app and let user open their remote and establish connection
     """
     parser = argparse.ArgumentParser(description=__doc__)
-
-    # First, be optimistic and assume both devices are on same network
-    # Display QR code to connect to localhost and if succeeds, then hurray!
-    try:
-        handle_same_network()
-    except UXException:
-        # Mobile and PC are not on same LAN
-        # This flow should handle such cases
-        handle_internet()
-
+    # TODO: Add parsing options (like ``--private-network``,
+    #  ``--public-network``)
+    handle_connection()
 
 
 if __name__ == '__main__':
