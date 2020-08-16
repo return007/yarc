@@ -22,9 +22,21 @@ function init() {
     Y = null;
     showRemote(remoteIdx);
 
-    // Play sound on key press of keyboard
-    var audio = new Audio('../static/resources/keypress_sound.mp3');
     $('.key').on('click', function() {
+        // Play sound on key press of keyboard
+        var audio = new Audio('../static/resources/keypress_sound.mp3');
+        audio.play();
+    });
+
+    $('.left-mouse-btn').on('click', function() {
+        // Play sound on key press of keyboard
+        var audio = new Audio('../static/resources/left-mouse-button-click.mp3');
+        audio.play();
+    });
+
+    $('.right-mouse-btn').on('click', function() {
+        // Play sound on key press of keyboard
+        var audio = new Audio('../static/resources/right-mouse-button-click.mp3');
         audio.play();
     });
 

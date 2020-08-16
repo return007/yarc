@@ -154,6 +154,15 @@ main .keyboard {
     right: 5px;
     border-bottom-right-radius: 15px;
 }
+.scroll {
+    display: inline-block;
+    height: 145px;
+    width: 20px;
+    background: linear-gradient(#666, #666) no-repeat center/1px 100%;
+    right: 0px;
+    position: absolute;
+    top: 10px;
+}
 
 .settings-bar {
     display: none;
