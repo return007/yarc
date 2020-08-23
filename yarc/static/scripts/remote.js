@@ -18,8 +18,9 @@ function showRemote(n) {
 function init() {
     // Do all the intialization here
     remoteIdx = 1;
-    X = null;
-    Y = null;
+    CMOVE_X = null;
+    CMOVE_Y = null;
+    SCROLL_Y = null;    // Only vertical scrolling is supported
     COMMAND_DELIMITER = '^_^';
     showRemote(remoteIdx);
 
@@ -74,34 +75,59 @@ function init() {
     });
 
     $('.touchpad').on('touchstart', function(event) {
-        X = event.touches[0].clientX;
-        Y = event.touches[0].clientY;
+        CMOVE_X = event.touches[0].clientX;
+        CMOVE_Y = event.touches[0].clientY;
     });
     $(".touchpad").on('touchmove', function(event) {
         var x = event.touches[0].clientX;
         var y = event.touches[0].clientY;
-        if(X == null && Y == null) {
+        if(CMOVE_X == null && CMOVE_Y == null) {
             // No previous touch happened.
-            X = x;
-            Y = y;
+            CMOVE_X = x;
+            CMOVE_Y = y;
         }
         // Only send signal to move when there is a significant movement
         // The distance moved during ontouch is more than 10px
-        var deltaX = parseInt(x-X);
-        var deltaY = parseInt(y-Y);
+        var deltaX = parseInt(x - CMOVE_X);
+        var deltaY = parseInt(y - CMOVE_Y);
         if(deltaX**2 + deltaY**2 >= 100) {
             // Send it via websocket
             // Command format is CMOVE^_^{deltaX},{deltaY}
             var data = `CMOVE${COMMAND_DELIMITER}${deltaX},${deltaY}`;
             ws.send(data);
-            X = x;
-            Y = y;
+            CMOVE_X = x;
+            CMOVE_Y = y;
         }
     });
     $('.touchpad').on('touchend', function(event) {
-        X = null;
-        Y = null;
+        CMOVE_X = null;
+        CMOVE_Y = null;
     });
+
+    $('.scroll').on('touchstart', function(event) {
+        SCROLL_Y = event.touches[0].clientY;
+    });
+    $(".scroll").on('touchmove', function(event) {
+        var y = event.touches[0].clientY;
+        if(SCROLL_Y == null) {
+            // Touching for the first time ;)
+            SCROLL_Y = y;
+        }
+        // Only send signal to move when there is a significant movement
+        // The distance moved during ontouch is more than 5px
+        var deltaY = parseInt(y - SCROLL_Y);
+        if(Math.abs(deltaY) >= 5) {
+            // Send it via websocket
+            // Command format is SCROLL^_^{deltaY}
+            var data = `SCROLL${COMMAND_DELIMITER}${deltaY}`;
+            ws.send(data);
+            SCROLL_Y = y;
+        }
+    });
+    $('.scroll').on('touchend', function(event) {
+        SCROLL_Y = null;
+    });
+
 }
 
 // Initialize on script load.
