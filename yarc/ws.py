@@ -34,6 +34,20 @@ async def cmove_handler(args):
     pyautogui.move(move_x, move_y)
 
 
+async def click_handler(args):
+    """
+    ``CLICK`` command callback.
+
+    Mouse click actions happens here.
+
+    :param args:
+      The arguments passed from JavaScript corresponding to ``CLICK`` command.
+      Possible values: "left"/"right"
+    """
+    args = args.strip()
+    pyautogui.click(button=args)
+
+
 async def main(websocket, path):
     """
     Main handler for incoming websocket traffic.
@@ -49,6 +63,10 @@ async def main(websocket, path):
                 # Instruction to move the cursor
                 # args will contain the delta to move (in both directions)
                 await cmove_handler(args)
+            elif command == 'CLICK':
+                # Instruction to click the mouse button
+                # args will contain which mouse button to click
+                await click_handler(args)
     except ConnectionClosedOK:
         log('WS connection closed by remote!')
         log('  But no worries, you can connect again :)', color='green')

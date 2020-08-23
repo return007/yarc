@@ -6,6 +6,7 @@ Launcher script to start the remote control server.
 
 import argparse
 import os
+import pyautogui
 import threading
 import time
 
@@ -89,6 +90,9 @@ def main():
     """
     Entry point (as usual)
     """
+    # Disable FAILSAFE (related to mouse cursor moving to screen corner)
+    pyautogui.FAILSAFE = False
+
     parser = argparse.ArgumentParser(description=__doc__)
     # TODO: Add parsing options (like ``--private-network``,
     #  ``--public-network``)

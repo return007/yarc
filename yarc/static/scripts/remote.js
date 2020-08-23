@@ -41,16 +41,25 @@ function init() {
         audio.play();
     });
 
-    $('.left-mouse-btn').on('click', function() {
-        // Play sound on key press of keyboard
-        var audio = new Audio('../static/resources/left-mouse-button-click.mp3');
+    $('.mouse-btn').on('click', function(event) {
+        // Determine left or right mouse button click
+        var target = event.target;
+        var classNames = target.className.split(' ');
+        var button = '';
+        var audio = '';
+        if(classNames.includes("left-mouse-btn")) {
+            // Left mouse button was clicked!
+            audio = new Audio('../static/resources/left-mouse-button-click.mp3');
+            button = 'left';
+        }
+        else {
+            // Right mouse button was clicked!
+            audio = new Audio('../static/resources/right-mouse-button-click.mp3');
+            button = 'right';
+        }
         audio.play();
-    });
-
-    $('.right-mouse-btn').on('click', function() {
-        // Play sound on key press of keyboard
-        var audio = new Audio('../static/resources/right-mouse-button-click.mp3');
-        audio.play();
+        var data = `CLICK${COMMAND_DELIMITER}${button}`;
+        ws.send(data);
     });
 
     $('[buttonid]').on('click', function() {
@@ -63,6 +72,7 @@ function init() {
             contentType: "application/json; charset=utf-8"
         });
     });
+
     $('.touchpad').on('touchstart', function(event) {
         X = event.touches[0].clientX;
         Y = event.touches[0].clientY;
