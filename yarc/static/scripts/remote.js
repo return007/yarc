@@ -20,7 +20,20 @@ function init() {
     remoteIdx = 1;
     X = null;
     Y = null;
+    COMMAND_DELIMITER = '^_^';
     showRemote(remoteIdx);
+
+    // Create websocket connection too
+    var addr = window.location.hostname;
+    var _getArgs = window.location.search.replace('?', '');
+    var getArgs = {}
+    for(var arg of _getArgs.split('&')){
+        var _a = arg.split('=');
+        var lhs = _a[0], rhs = _a[1];
+        getArgs[lhs] = rhs
+    }
+    var wsport = getArgs['wsport']
+    ws = new WebSocket(`ws://${addr}:${wsport}`);
 
     $('.key').on('click', function() {
         // Play sound on key press of keyboard
@@ -62,13 +75,17 @@ function init() {
             X = x;
             Y = y;
         }
-        if(!(X == x && Y == y)) {
-            $.ajax({
-                type: 'post',
-                url: '/mousemove',
-                data: JSON.stringify({delta_x: x-X, delta_y: y-Y}),
-                contentType: "application/json; charset=utf-8"
-            });
+        // Only send signal to move when there is a significant movement
+        // The distance moved during ontouch is more than 10px
+        var deltaX = parseInt(x-X);
+        var deltaY = parseInt(y-Y);
+        if(deltaX**2 + deltaY**2 >= 100) {
+            // Send it via websocket
+            // Command format is CMOVE^_^{deltaX},{deltaY}
+            var data = `CMOVE${COMMAND_DELIMITER}${deltaX},${deltaY}`;
+            ws.send(data);
+            X = x;
+            Y = y;
         }
     });
     $('.touchpad').on('touchend', function(event) {

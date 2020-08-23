@@ -39,15 +39,6 @@ def keypress_callback():
     return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
 
 
-@app.route("/mousemove", methods=['POST'])
-def mousemove_callback():
-    data = request.get_json()
-    delta_x = data['delta_x']
-    delta_y = data['delta_y']
-    pyautogui.move(delta_x, delta_y)
-    return json.dumps({'success':True}), 200, {'ContentType':'application/json'}
-
-
 @app.after_request
 def add_header(r):
     """

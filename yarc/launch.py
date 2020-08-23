@@ -11,6 +11,7 @@ import time
 
 from app import run as app_run
 from util import get_free_port, get_my_local_addr, log, render_qrcode
+from ws import run as ws_run
 
 
 def handle_connection(my_local_addr=None):
@@ -48,11 +49,12 @@ def handle_connection(my_local_addr=None):
     if not my_local_addr:
         my_local_addr = get_my_local_addr()
 
-    port = get_free_port()
-    addr = f"http://{my_local_addr}:{port}"
+    app_port = get_free_port()
+    ws_port = get_free_port()
+    addr = f"http://{my_local_addr}:{app_port}?wsport={ws_port}"
 
     try:
-        app_thread = threading.Thread(target=app_run, args=(port,),
+        app_thread = threading.Thread(target=app_run, args=(app_port,),
                                       daemon=True)
         app_thread.start()
     except:
@@ -68,8 +70,10 @@ def handle_connection(my_local_addr=None):
     log(f"\t\t{addr}\n", color="blue", bold=True)
 
     try:
-        while app_thread.is_alive():
-            time.sleep(1)
+        # Run the event loop for the websocket connection in the main thread.
+        # P.S. We could also do this in another thread, but why waste the
+        # main thread (since it was doing nothing but sleeping Zzz)
+        ws_run(port=ws_port)
     except Exception as e:
         # Simply pass, and then gracefully exit
         # Don't forget to print what happened

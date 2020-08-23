@@ -29,6 +29,9 @@ FORMAT_MAP = {
 }
 
 
+COMMAND_DELIMITER = '^_^'
+
+
 def render_qrcode(text):
     """
     Displays a QR code with the given ``text`` on the terminal.
