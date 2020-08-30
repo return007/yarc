@@ -128,6 +128,12 @@ function init() {
         SCROLL_Y = null;
     });
 
+    $('.toggle').on('click', function(event) {
+        var viewBlock = $(this.parentElement.parentElement);
+        $('.view').css('display', 'block');
+        viewBlock.css('display', 'none');
+    });
+
 }
 
 // Initialize on script load.

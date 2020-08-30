@@ -202,27 +202,36 @@ main .keyboard {
     box-shadow: 0px 0px 1px 0px rgb(138, 138, 138);
     transform: translateY(2px);
 }
-.key#tab {
+.key.tab {
     width: 8%;
 }
-.key#caps {
+.key.caps {
     width: 10%;
 }
-.key#shift {
-    width: 15%;
+.key.shift {
+    width: 12%;
 }
-.key#toggle{
+.key.toggle{
     width: 4%;
 }
-.key#cmd{
+.key.cmd{
     width: 4%;
 }
-.key#spacebar {
+.key.spacebar {
     width: 50%;
 }
-.key#enter {
+.key.enter {
     width: 15%;
 }
+.key.backspace {
+    width: 10%;
+}
+.backspace > img {
+    width: 20px;
+    height: 20px;
+}
+
+
 .switch-remote {
     height: 100%;
     font-size: 30px;
@@ -259,8 +268,12 @@ main .keyboard {
     main .keyboard {
         padding: 15px;
     }
-    .key#tab, .key#caps, .key#shift, .key#toggle {
+    .key.tab, .key.caps, .key.shift, .key.toggle {
         font-size: 12px;
+    }
+    .backspace > img {
+        height: 5%;
+        min-height: 16px;
     }
     .settings-bar {
         display: block;
@@ -352,6 +365,7 @@ main .keyboard {
     position: absolute;
     cursor: pointer;
 }
+
 
 
 * {
