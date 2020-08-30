@@ -2,7 +2,29 @@
 
 ## Yet Another Remote Control
 
-Control your desktop / laptop via mobile phone. 
+Control your desktop / laptop via mobile phone.
+
+### How to:
+
+Running control server and connecting to it is very straightforward. You would
+need to do the following:
+
+```
+$ [sudo] pip install yarc-server
+
+$ yarc
+
+Starting control server...
+
+Remote server running...
+Scan the below code to start using remote control.
+
+*SNIP*
+
+Or alternatively, write the following URL on your mobile browser:
+    http://192.168.1.4:xxx?wsport=xxx
+
+```
 
 ### Basic features:
 
@@ -34,11 +56,11 @@ the remote should automatically switch to movie mode.
    open Netflix on a single tap. Now, the way people open netflix is different.
    Some may have a Netflix app installed on their device, while others may use
    browser. Thus, user should be able to create with predefined event blocks, like:
-   
+
    `press(winleft) -> type("Netflix") -> press(enter)`
-   
-   OR 
-   
+
+   OR
+
    `press(winleft) -> type("Chrome") -> type("Netflix") -> press(enter)`
 
  - Gaming mode
@@ -48,7 +70,7 @@ the remote should automatically switch to movie mode.
    way to show running apps)
 
  - Customize theme of the remotes. Plug and play themes from website.
- 
+
  - Allow user's to create their own themes and use it.
 
  - Netflix / Prime customization - example: skip intro, etc.

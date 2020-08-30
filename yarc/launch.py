@@ -22,8 +22,12 @@ Steps to start yarc server
 import argparse
 import os
 import pyautogui
+import sys
 import threading
 import time
+
+
+sys.path.append(os.path.dirname(__file__))
 
 from app import run as app_run
 from util import get_free_port, get_my_local_addr, log, render_qrcode
