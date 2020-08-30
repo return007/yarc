@@ -2,6 +2,21 @@
 """
 Launcher script to start the remote control server.
 
+As of now, you are not required to pass any arguments (as there is not much
+configuration available.)
+
+Steps to start yarc server
+==========================
+
+ 1. Launch the script.
+
+ 2. Scan the QR code from your mobile phone,
+                     OR
+    Enter the address that shows up on the screen
+    on your mobile's browser.
+
+ 3. Enjoy!
+
 """
 
 import argparse
@@ -93,7 +108,10 @@ def main():
     # Disable FAILSAFE (related to mouse cursor moving to screen corner)
     pyautogui.FAILSAFE = False
 
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description=__doc__, formatter_class=argparse.RawTextHelpFormatter
+    )
+    args = parser.parse_args()
     # TODO: Add parsing options (like ``--private-network``,
     #  ``--public-network``)
     handle_connection()
