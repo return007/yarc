@@ -1,0 +1,6 @@
+include README.md
+include yarc/static/*
+include yarc/static/resources/*
+include yarc/static/scripts/*
+include yarc/static/styles/*
+include yarc/templates/*
