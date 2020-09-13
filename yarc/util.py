@@ -119,18 +119,53 @@ def log(text, where='stdout', color=None, **fmt_options):
     logto.flush()
 
 
-def get_free_port():
+def _check_free_port(port):
+    """
+    Checks if a port no. if free or not.
+
+    .. warning::
+      The function does not guarantee if the port will remiain free by the time it
+      will be used,
+    """
+    try:
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.connect(('127.0.0.1', port))
+    except:
+        return False
+    return True
+
+
+def get_free_port_pair():
     """
     Get a free open port on the machine. This is not a very optimal solution,
     but just works!
+
+    Getting port no. from a socket connection is not a great solution. It always
+    randomly generates port numbers (like XXXXX). In most cases, user's have most
+    common port numbers empty. Let's use those first.
+
+    .. note::
+      This function is based on very custom requirement. Who needs a pair of ports?
+      Well, if you need, you can use this function too.
+
+    :rtype:
+      `tuple` of `int`
+    :return:
+      ``tuple`` containing a pair of port free port numbers.
     """
+    common_ports_pair = [(5050, 1234), (6060, 1234), (5050, 4321), (6060, 4321)]
+    for p1, p2 in common_ports_pair:
+        if _check_free_port(p1) and _check_free_port(p2):
+            return p1, p2
+
+    # In case the above does not work, fallback to original logic.
     try:
-        sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        sock.connect(('', 80))
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock = sock.connect(('127.0.0.1', 80))
+            p1 = sock.getsockname()[1]
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock = sock.connect(('127.0.0.1', 80))
+            p2 = sock.getsockname()[1]
     except:
         raise
-    else:
-        port = sock.getsockname()[1]
-        sock.close()
-
-    return port
+    return p1, p2

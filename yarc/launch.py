@@ -30,7 +30,7 @@ import time
 sys.path.append(os.path.dirname(__file__))
 
 from app import run as app_run
-from util import get_free_port, get_my_local_addr, log, render_qrcode
+from util import get_free_port_pair, get_my_local_addr, log, render_qrcode
 from ws import run as ws_run
 
 
@@ -69,8 +69,7 @@ def handle_connection(my_local_addr=None):
     if not my_local_addr:
         my_local_addr = get_my_local_addr()
 
-    app_port = get_free_port()
-    ws_port = get_free_port()
+    app_port, ws_port = get_free_port_pair()
     addr = f"http://{my_local_addr}:{app_port}?wsport={ws_port}"
 
     try:
