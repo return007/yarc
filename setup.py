@@ -10,7 +10,7 @@ with open(README_PATH) as f:
 # This call to setup() does all the work
 setup(
     name                          = 'yarc-server',
-    version                       = '0.1.0',
+    version                       = '0.1.1',
     description                   = 'Yet Another Remote Control',
     long_description              = README_DATA,
     long_description_content_type = 'text/markdown',
@@ -20,6 +20,13 @@ setup(
     packages                      = ['yarc'],
     include_package_data          = True,
     python_requires               = '>=3.6',
+    license                       = 'MIT',
+    classifiers = [
+        'License :: OSI Approved :: MIT License',
+        'Development Status :: 3 - Alpha',
+        'Topic :: Internet :: WWW/HTTP :: HTTP Servers',
+        'Programming Language :: Python :: 3',
+    ],
     install_requires = [
         'pyautogui',
         'flask',
@@ -28,8 +35,8 @@ setup(
         'websockets'
     ],
     entry_points = {
-        "console_scripts": [
-            "yarc=yarc.launch:main",
+        'console_scripts': [
+            'yarc=yarc.launch:main',
         ]
     },
 )
