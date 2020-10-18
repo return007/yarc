@@ -4,6 +4,9 @@
 
 Control your desktop / laptop via mobile phone.
 
+### First things first: Demo
+[![Demo video](https://img.youtube.com/vi/scnOaSi3Znw/0.jpg)](https://www.youtube.com/watch?v=scnOaSi3Znw)
+
 ### How to:
 
 Running control server and connecting to it is very straightforward. You would
@@ -81,3 +84,6 @@ the remote should automatically switch to movie mode.
 
  - Listen to the audio from phone itself (Use-case: wired earphones can be
    plugged in to mobile but the video would continue to play on the screen)
+
+### Blogpost annoucement
+**Medium:** https://medium.com/@return007/yarc-for-the-laziness-in-you-f352717cc00
